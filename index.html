@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Surprise</title>
+    <style>
+        body {
+            background-color: #ffcccc;
+            overflow: hidden;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+        .heart {
+            position: absolute;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        .number {
+            position: fixed;
+            font-size: 50px;
+            font-weight: bold;
+            color: red;
+        }
+        .message {
+            display: none;
+            position: fixed;
+            top: 40%; /* Moved higher */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            color: red;
+        }
+        .confetti {
+            position: absolute;
+            animation: floatUp 2s linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        let clickedRed = false;
+        let clickedBlue = false;
+
+        function createHeart(x, y, color) {
+            let heart = document.createElement("div");
+            heart.className = "heart";
+            heart.innerText = color === 'red' ? "❤️" : "💙";
+            heart.style.left = `${x}px`;
+            heart.style.top = `${y}px`;
+            document.body.appendChild(heart);
+            
+            heart.addEventListener("click", function() {
+                if (color === 'red') {
+                    clickedRed = true;
+                    displayNumber(2, "40%");
+                } else {
+                    clickedBlue = true;
+                    displayNumber(3, "60%");
+                }
+                checkCondition();
+            });
+        }
+
+        function displayNumber(num, position) {
+            let numberElement = document.createElement("div");
+            numberElement.className = "number";
+            numberElement.innerText = num;
+            numberElement.style.top = "20%";
+            numberElement.style.left = position;
+            document.body.appendChild(numberElement);
+        }
+
+        function checkCondition() {
+            if (clickedRed && clickedBlue) {
+                showMessage();
+            }
+        }
+
+        function showMessage() {
+            let message = document.createElement("div");
+            message.className = "message";
+            message.innerText = "HAPPY 23 DAYS BEFORE YOUR BDAY HERSHEY MOONPIE!";
+            document.body.appendChild(message);
+            message.style.display = "block";
+            for (let i = 0; i < 50; i++) {
+                createConfetti();
+            }
+        }
+
+        function createConfetti() {
+            let element = document.createElement("div");
+            element.className = "confetti";
+            element.innerText = "✨";
+            element.style.left = Math.random() * window.innerWidth + "px";
+            element.style.top = Math.random() * window.innerHeight + "px";
+            document.body.appendChild(element);
+            setTimeout(() => { element.remove(); }, 2000);
+        }
+
+        createHeart(window.innerWidth / 2 - 50, window.innerHeight / 2, 'red');
+        createHeart(window.innerWidth / 2 + 50, window.innerHeight / 2, 'blue');
+    </script>
+</body>
+</html>
